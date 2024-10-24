@@ -1,107 +1,83 @@
-is_a(lion, cat).
-is_a(tiger, cat).
-is_a(cat, mammal).
-is_a(dog, mammal).
-is_a(mammal, animal).
-is_a(bird, animal).
-is_a(sparrow, bird).
-is_a(eagle, bird).
-is_a(falcon, bird).
-is_a(reptile, animal).
-is_a(crocodile, reptile).
-is_a(lizard, reptile).
-is_a(snake, reptile).
-is_a(horse, mammal).
-is_a(deer, mammal).
-is_a(whale, mammal).
-is_a(dolphin, mammal).
-is_a(shark, fish).
-is_a(fish, animal).
-is_a(cow, mammal).
-is_a(buffalo, mammal).
-is_a(plant, living_being).
-is_a(animal, living_being).
-is_a(tree, plant).
-is_a(herb, plant).
-is_a(human, mammal).
-is_a(insect, animal).
-is_a(butterfly, insect).
-is_a(ant, insect).
-is_a(frog, amphibian).
-is_a(amphibian, animal).
-is_a(mythical_creature, animal).
-is_a(mermaid, mythical_creature).
-is_a(mermaid, human).
-is_a(dragon, mythical_creature).
-is_a(dragon, reptile).
-is_a(basilisk, mythical_creature).
-is_a(basilisk, reptile).
+% Define types and categories
+kind_of(smartphone, mobile_device).
+kind_of(tablet, mobile_device).
+kind_of(mobile_device, computing_device).
+kind_of(laptop, computing_device).
+kind_of(desktop, computing_device).
+kind_of(computing_device, electronic_device).
+kind_of(smartwatch, wearable_device).
+kind_of(fitness_tracker, wearable_device).
+kind_of(wearable_device, electronic_device).
+kind_of(electronic_device, gadget).
+kind_of(router, networking_device).
+kind_of(switch, networking_device).
+kind_of(networking_device, hardware).
+kind_of(printer, peripheral_device).
+kind_of(scanner, peripheral_device).
+kind_of(peripheral_device, hardware).
+kind_of(hardware, gadget).
+kind_of(software_application, software).
+kind_of(operating_system, software).
+kind_of(software, digital_product).
+kind_of(digital_product, product).
 
-part_of(head, body).
-part_of(tail, body).
-part_of(leg, body).
-part_of(feather, bird).
-part_of(fur, mammal).
-part_of(skin, reptile).
-part_of(leg, mammal).
-part_of(leg, reptile).
-part_of(teeth, head).
-part_of(claw, leg).
-part_of(beak, head).
-part_of(horn, deer).
-part_of(gill, fish).
-part_of(fin, fish).
-part_of(wing, bird).
-part_of(leaf, tree).
-part_of(branch, tree).
-part_of(root, plant).
-part_of(flower, plant).
-part_of(wings, dragon).
-part_of(tail, dragon).
-part_of(venom, basilisk).
+% Define components and parts
+component_of(screen, smartphone).
+component_of(battery, mobile_device).
+component_of(processor, computing_device).
+component_of(memory_chip, computing_device).
+component_of(camera_module, smartphone).
+component_of(antenna, router).
+component_of(port, networking_device).
+component_of(sensor, wearable_device).
+component_of(keyboard, laptop).
+component_of(mouse, desktop).
+component_of(display_panel, television).
+component_of(storage_drive, computing_device).
+component_of(circuit_board, electronic_device).
+component_of(firmware, hardware).
+component_of(software_driver, peripheral_device).
 
-causes(lion, fear_in_deer).
-causes(dragon, destruction).
-causes(basilisk, paralysis).
-causes(fire, destruction).
-causes(cycle, cycle).
-requires(bird, air).
-requires(fish, water).
-requires(plant, sunlight).
-requires(dragon, fire).
-requires(basilisk, darkness).
-requires(frog, water).
-interaction(lion, tiger).
-interaction(dragon, basilisk).
-dependent_on(dragon, fire).
-dependent_on(plant, sunlight).
-dependent_on(butterfly, flower).
+% Define relationships and dependencies
+produces(smartphone, communication).
+produces(router, connectivity).
+produces(printer, printed_document).
+produces(scanner, digital_copy).
+produces(software_application, data_output).
+needs(mobile_device, battery_power).
+needs(computing_device, operating_system).
+needs(router, internet_connection).
+needs(printer, ink_cartridge).
+needs(scanner, driver_software).
+interacts_with(smartphone, smartwatch).
+interacts_with(laptop, printer).
+depends_on(software_application, operating_system).
+depends_on(fitness_tracker, smartphone).
+depends_on(networking_device, firmware_update).
 
-causal_chain(X, Z) :- causes(X, Z).
-causal_chain(X, Z) :- causes(X, Y), causal_chain(Y, Z).
+% Define chain rules for causality, requirements, interactions, and dependencies
+effect_chain(X, Z) :- produces(X, Z).
+effect_chain(X, Z) :- produces(X, Y), effect_chain(Y, Z).
 
-required_chain(X, Z) :- requires(X, Z).
-required_chain(X, Z) :- requires(X, Y), required_chain(Y, Z).
+requirement_chain(X, Z) :- needs(X, Z).
+requirement_chain(X, Z) :- needs(X, Y), requirement_chain(Y, Z).
 
-interaction_chain(X, Z) :- interaction(X, Z).
-interaction_chain(X, Z) :- interaction(X, Y), interaction_chain(Y, Z).
+interaction_sequence(X, Z) :- interacts_with(X, Z).
+interaction_sequence(X, Z) :- interacts_with(X, Y), interaction_sequence(Y, Z).
 
-dependency_chain(X, Z) :- dependent_on(X, Z).
-dependency_chain(X, Z) :- dependent_on(X, Y), dependency_chain(Y, Z).
+dependency_sequence(X, Z) :- depends_on(X, Z).
+dependency_sequence(X, Z) :- depends_on(X, Y), dependency_sequence(Y, Z).
 
+% Define inheritance and component chains
+inherits_from(X, Z) :- kind_of(X, Z).
+inherits_from(X, Z) :- kind_of(X, Y), inherits_from(Y, Z).
 
-inherit(X, Z) :- is_a(X, Z).
-inherit(X, Z) :- is_a(X, Y), inherit(Y, Z).
+component_chain(X, Z) :- component_of(X, Z).
+component_chain(X, Z) :- component_of(X, Y), component_chain(Y, Z).
+component_chain(X, Z) :- kind_of(X, Y), component_of(Y, Z).
 
-part_of_chain(X, Z) :- part_of(X, Z).
-part_of_chain(X, Z) :- part_of(X, Y), part_of_chain(Y, Z).
+% Define inheritance restrictions and multiple inheritance
+inheritance_restricted(X, Z) :- component_chain(X, Y), kind_of(Y, Z).
 
-part_of_chain(X, Z) :- is_a(X, Y), part_of(Y, Z).
-
-prohibit_inheritance(X, Z) :- part_of_chain(X, Y), is_a(Y, Z).
-
-
-multi_inherit(X, [P1, P2]) :- is_a(X, P1), is_a(X, P2).
-
-multi_inherit(X, [P1, P2, P3]) :- is_a(X, P1), is_a(X, P2), is_a(X, P3).
-
+multiple_inheritance(X, [P1, P2]) :- kind_of(X, P1), kind_of(X, P2).
+multiple_inheritance(X, [P1, P2, P3]) :- kind_of(X, P1), kind_of(X, P2), kind_of(X, P3).
